@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using HelloApi.Models.DTOs;
-using HelloApi.Services;
+using MessageApi.Models.DTOs;
+using MessageApi.Services;
 
-namespace HelloApi.Controllers
+namespace MessageApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

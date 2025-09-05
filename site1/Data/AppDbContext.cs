@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using MessageApi.Models;
-using HelloApi.Models;
 
 namespace MessageApi.Data;
 
@@ -9,6 +8,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Message> Messages => Set<Message>();
     public DbSet<Person> Persons => Set<Person>();
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<Item> Items => Set<Item>();
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<Invoice> Invoices => Set<Invoice>();
     public DbSet<Detail> Details => Set<Detail>();
