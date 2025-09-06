@@ -4,7 +4,6 @@
   <mat-dialog-content class="dialog-content">
     <form [formGroup]="productForm" class="product-form">
       
-      <!-- Name Field -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nombre del Producto</mat-label>
         <input matInput formControlName="name" placeholder="Ingresa el nombre del producto">
@@ -13,7 +12,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- User Note Field -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nota del usuario</mat-label>
         <input matInput formControlName="userNote" placeholder="Ingresa una nota (requerido para auditoría)">
