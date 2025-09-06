@@ -1,7 +1,11 @@
 export class Item {
 
-    public id: number = 0;
-    public name: string = '';
-    public description: string = '';
+    id?: number;
+    name: string;
+    price: number;
+    createdBy?: number;
+    createdAt?: Date;
+    updatedBy?: number;
+    updatedAt?: Date;
     
 }

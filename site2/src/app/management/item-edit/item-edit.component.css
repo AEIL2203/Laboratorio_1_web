@@ -1,0 +1,32 @@
+.dialog-container {
+  padding: 20px;
+  min-width: 400px;
+  max-width: 500px;
+}
+
+.dialog-content {
+  padding: 20px 0;
+}
+
+.item-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.dialog-actions {
+  padding: 16px 0;
+  gap: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-bottom: 16px;
+}
+
+.mat-mdc-raised-button:disabled {
+  opacity: 0.6;
+}
