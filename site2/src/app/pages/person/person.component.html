@@ -1,9 +1,14 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0">Lista de Personas</h4>
-    <button mat-raised-button color="primary" (click)="openDialog()">
-      Agregar Persona
-    </button>
+    <div>
+      <button mat-raised-button color="accent" (click)="testConnection()" class="me-2">
+        Test API
+      </button>
+      <button mat-raised-button color="primary" (click)="openDialog()">
+        Agregar Persona
+      </button>
+    </div>
   </div>
 
   <mat-form-field appearance="outline" class="w-100 mb-3">

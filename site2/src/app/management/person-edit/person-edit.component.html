@@ -8,18 +8,30 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>First Name</mat-label>
         <input matInput formControlName="firstName" />
+        <mat-error *ngIf="personForm.get('firstName')?.hasError('required')">
+          El nombre es requerido
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="col-12 mb-3">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Last Name</mat-label>
         <input matInput formControlName="lastName" />
+        <mat-error *ngIf="personForm.get('lastName')?.hasError('required')">
+          El apellido es requerido
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="col-12 mb-3">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email" />
+        <input matInput formControlName="email" type="email" />
+        <mat-error *ngIf="personForm.get('email')?.hasError('required')">
+          El email es requerido
+        </mat-error>
+        <mat-error *ngIf="personForm.get('email')?.hasError('email')">
+          Ingresa un email válido
+        </mat-error>
       </mat-form-field>
     </div>
   </mat-dialog-content>

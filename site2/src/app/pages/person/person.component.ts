@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Inject, ViewChild } from '@angular/core';
+import { Component, inject, Inject, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,7 +36,7 @@ import swal from 'sweetalert';
   templateUrl: './person.component.html',
   styleUrl: './person.component.css'
 })
-export class PersonComponent {
+export class PersonComponent implements AfterViewInit {
 
   private PersonService = inject(PersonService);
   private dialog = inject(MatDialog);
@@ -51,14 +51,30 @@ export class PersonComponent {
     this.loadPersons();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   loadPersons() {
+    console.log('Loading persons...');
     this.PersonService.getAll().subscribe({
       next: (Response) => {
+        console.log('Received response:', Response);
+        console.log('Response type:', typeof Response);
+        console.log('Is array:', Array.isArray(Response));
+        console.log('Response length:', Response?.length);
+        
         // Asegurar que Response sea un array
         let data = Array.isArray(Response) ? Response : [];
+        console.log('Final data for table:', data);
+        
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        
+        console.log('DataSource data:', this.dataSource.data);
+        console.log('DataSource length:', this.dataSource.data.length);
       },
       error: (error) => {
         console.error('Error loading persons:', error);
@@ -85,9 +101,51 @@ export class PersonComponent {
   }
 
   delete(id: number) {
-    if (confirm('Are you sure?')) {
-      this.PersonService.delete(id).subscribe(() => this.loadPersons());
-    }
+    swal({
+      title: "¿Estás seguro?",
+      text: "Una vez eliminada, no podrás recuperar esta persona.",
+      icon: "warning",
+      buttons: ["Cancelar", "Eliminar"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        this.PersonService.delete(id).subscribe({
+          next: () => {
+            swal("Eliminado", "La persona ha sido eliminada correctamente.", "success");
+            this.loadPersons();
+          },
+          error: (error) => {
+            console.error('Error deleting person:', error);
+            swal("Error", "No se pudo eliminar la persona.", "error");
+          }
+        });
+      }
+    });
+  }
+
+  testConnection() {
+    console.log('Testing API connection...');
+    fetch('http://localhost:5000/api/person')
+      .then(response => {
+        console.log('Raw response status:', response.status);
+        console.log('Raw response headers:', response.headers);
+        return response.text();
+      })
+      .then(text => {
+        console.log('Raw response text:', text);
+        try {
+          const json = JSON.parse(text);
+          console.log('Parsed JSON:', json);
+          swal("API Test", `Conexión exitosa! Datos recibidos: ${JSON.stringify(json)}`, "success");
+        } catch (e) {
+          console.log('Failed to parse as JSON:', e);
+          swal("API Test", `Respuesta recibida pero no es JSON válido: ${text}`, "warning");
+        }
+      })
+      .catch(error => {
+        console.error('API connection failed:', error);
+        swal("API Test", `Error de conexión: ${error.message}`, "error");
+      });
   }
 
 }

@@ -32,14 +32,16 @@ export class PersonEditComponent {
   personForm: FormGroup;
   constructor(@Inject(MAT_DIALOG_DATA) public data: Person) {
     this.personForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
   ngOnInit() {
-    if (this.data) this.personForm.patchValue(this.data);
+    if (this.data) {
+      this.personForm.patchValue(this.data);
+    }
   }
 
   onSubmit() {
