@@ -30,7 +30,6 @@ namespace MessageApi.Models
         /// Se establece automáticamente al crear el registro.
         /// </summary>
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
@@ -40,4 +39,3 @@ namespace MessageApi.Models
         public DateTime? UpdatedAt { get; set; }
     }
 }
-

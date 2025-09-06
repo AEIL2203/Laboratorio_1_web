@@ -7,7 +7,7 @@ namespace MessageApi.Models
     /// Representa un artículo o producto en el sistema.
     /// Esta entidad se utiliza para gestionar los artículos que pueden ser incluidos en los pedidos.
     /// </summary>
-    [Table("Items")]  // Especifica el nombre de la tabla en la base de datos
+    [Table("Item")]  // Especifica el nombre de la tabla en la base de datos
     public class Item
     {
         /// <summary>
@@ -44,7 +44,6 @@ namespace MessageApi.Models
         /// Se establece automáticamente al crear el registro.
         /// </summary>
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
@@ -65,4 +64,3 @@ namespace MessageApi.Models
         public List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }
-

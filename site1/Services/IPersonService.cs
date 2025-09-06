@@ -36,9 +36,9 @@ namespace MessageApi.Services
         /// </summary>
         /// <param name="id">Identificador único de la persona a actualizar</param>
         /// <param name="person">DTO con los datos actualizados de la persona</param>
-        /// <returns>DTO con los datos actualizados de la persona o null si no se encuentra</returns>
+        /// <returns>True si la actualización fue exitosa, False si no se encuentra</returns>
         /// <exception cref="ArgumentNullException">Se lanza si el DTO de la persona es nulo</exception>
-        Task<PersonReadDto?> UpdatePersonAsync(int id, PersonUpdateDto person);
+        Task<bool> UpdatePersonAsync(int id, PersonCreateDto person);
         
         /// <summary>
         /// Elimina una persona por su identificador único de forma asíncrona.
@@ -48,4 +48,3 @@ namespace MessageApi.Services
         Task<bool> DeletePersonAsync(int id);
     }
 }
-

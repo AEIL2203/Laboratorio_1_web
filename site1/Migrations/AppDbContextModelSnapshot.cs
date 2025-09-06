@@ -22,7 +22,7 @@ namespace MessageApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HelloApi.Models.Client", b =>
+            modelBuilder.Entity("MessageApi.Models.Client", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,23 +31,28 @@ namespace MessageApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Nit")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -57,7 +62,7 @@ namespace MessageApi.Migrations
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Detail", b =>
+            modelBuilder.Entity("MessageApi.Models.Detail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,12 +71,14 @@ namespace MessageApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("InvoiceId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductId")
@@ -84,6 +91,7 @@ namespace MessageApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -98,7 +106,7 @@ namespace MessageApi.Migrations
                     b.ToTable("Details");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Invoice", b =>
+            modelBuilder.Entity("MessageApi.Models.Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -110,6 +118,7 @@ namespace MessageApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Number")
@@ -117,7 +126,8 @@ namespace MessageApi.Migrations
 
                     b.Property<string>("Serial")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -129,7 +139,7 @@ namespace MessageApi.Migrations
                     b.ToTable("Invoices");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Item", b =>
+            modelBuilder.Entity("MessageApi.Models.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,9 +155,11 @@ namespace MessageApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -158,10 +170,10 @@ namespace MessageApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Item");
+                    b.ToTable("Item", (string)null);
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Order", b =>
+            modelBuilder.Entity("MessageApi.Models.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,6 +182,32 @@ namespace MessageApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnName("MessageText");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("MessageApi.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedBy")
@@ -194,7 +232,7 @@ namespace MessageApi.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.OrderDetail", b =>
+            modelBuilder.Entity("MessageApi.Models.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -203,6 +241,7 @@ namespace MessageApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedBy")
@@ -215,12 +254,14 @@ namespace MessageApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -238,7 +279,7 @@ namespace MessageApi.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Person", b =>
+            modelBuilder.Entity("MessageApi.Models.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,29 +288,37 @@ namespace MessageApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("Email");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("FirstName");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("LastName");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedAt");
 
                     b.HasKey("Id");
 
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Product", b =>
+            modelBuilder.Entity("MessageApi.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -282,7 +331,8 @@ namespace MessageApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -292,38 +342,15 @@ namespace MessageApi.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("MessageApi.Models.Message", b =>
+            modelBuilder.Entity("MessageApi.Models.Detail", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("MessageText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("HelloApi.Models.Detail", b =>
-                {
-                    b.HasOne("HelloApi.Models.Invoice", "Invoice")
+                    b.HasOne("MessageApi.Models.Invoice", "Invoice")
                         .WithMany("Details")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HelloApi.Models.Product", "Product")
+                    b.HasOne("MessageApi.Models.Product", "Product")
                         .WithMany("Details")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -334,9 +361,9 @@ namespace MessageApi.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Invoice", b =>
+            modelBuilder.Entity("MessageApi.Models.Invoice", b =>
                 {
-                    b.HasOne("HelloApi.Models.Client", "Client")
+                    b.HasOne("MessageApi.Models.Client", "Client")
                         .WithMany("Invoices")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -345,9 +372,9 @@ namespace MessageApi.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Order", b =>
+            modelBuilder.Entity("MessageApi.Models.Order", b =>
                 {
-                    b.HasOne("HelloApi.Models.Person", "Person")
+                    b.HasOne("MessageApi.Models.Person", "Person")
                         .WithMany("Orders")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -356,15 +383,15 @@ namespace MessageApi.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.OrderDetail", b =>
+            modelBuilder.Entity("MessageApi.Models.OrderDetail", b =>
                 {
-                    b.HasOne("HelloApi.Models.Item", "Item")
+                    b.HasOne("MessageApi.Models.Item", "Item")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HelloApi.Models.Order", "Order")
+                    b.HasOne("MessageApi.Models.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -375,32 +402,32 @@ namespace MessageApi.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Client", b =>
+            modelBuilder.Entity("MessageApi.Models.Client", b =>
                 {
                     b.Navigation("Invoices");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Invoice", b =>
+            modelBuilder.Entity("MessageApi.Models.Invoice", b =>
                 {
                     b.Navigation("Details");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Item", b =>
+            modelBuilder.Entity("MessageApi.Models.Item", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Order", b =>
+            modelBuilder.Entity("MessageApi.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Person", b =>
+            modelBuilder.Entity("MessageApi.Models.Person", b =>
                 {
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("HelloApi.Models.Product", b =>
+            modelBuilder.Entity("MessageApi.Models.Product", b =>
                 {
                     b.Navigation("Details");
                 });

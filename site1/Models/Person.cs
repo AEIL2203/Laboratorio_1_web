@@ -48,7 +48,6 @@ namespace MessageApi.Models
         /// Se establece automáticamente al crear el registro.
         /// </summary>
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Column("CreatedAt")]  // Especifica el nombre de la columna en la base de datos
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -66,4 +65,3 @@ namespace MessageApi.Models
         public List<Order> Orders { get; set; } = new List<Order>();
     }
 }
-

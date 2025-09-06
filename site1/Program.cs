@@ -10,16 +10,18 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // EF Core + SQL Server
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Register services
-builder.Services.AddScoped<IItemService, ItemService>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -34,15 +36,9 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 // Servicios
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-
-// Configuración de controladores
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    });
 
 // Configuración de Swagger
 builder.Services.AddSwaggerGen(c =>
@@ -50,33 +46,51 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order Management API", Version = "v1" });
 });
 
-// CORS Configuration - Permitir solicitudes desde el frontend
+// CORS Configuration
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? [];
+if (allowedOrigins.Length == 0)
+{
+    // Si no hay orígenes configurados, permitir cualquier origen en desarrollo
+    if (builder.Environment.IsDevelopment())
+    {
+        allowedOrigins = ["*"];
+    }
+}
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy", policy =>
+    options.AddPolicy("CorsPolicy", builder =>
     {
-        policy.WithOrigins("http://localhost:4200") // URL del frontend Angular
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+        if (allowedOrigins.Contains("*"))
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        }
+        else
+        {
+            builder.WithOrigins(allowedOrigins)
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+        }
     });
 });
 
 var app = builder.Build();
 
 // Configuración de la canalización de solicitudes HTTP
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-
-// Habilitar Swagger en todos los entornos
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Order Management API v1");
-    c.RoutePrefix = "swagger"; // Disponible en /swagger o /swagger/index.html
+    c.RoutePrefix = "swagger";
 });
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
 app.UseHttpsRedirection();
 app.UseRouting();

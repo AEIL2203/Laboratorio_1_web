@@ -7,7 +7,7 @@ using MessageApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace MessageApi.Controllers
+namespace HelloApi.Controllers
 {
     /// <summary>
     /// Controlador para gestionar las operaciones CRUD de órdenes.

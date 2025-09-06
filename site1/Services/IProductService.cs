@@ -37,9 +37,9 @@ namespace MessageApi.Services
         /// </summary>
         /// <param name="id">Identificador único del producto a actualizar</param>
         /// <param name="product">DTO con los datos actualizados del producto</param>
-        /// <returns>DTO con los datos actualizados del producto o null si no se encuentra</returns>
+        /// <returns>True si la actualización fue exitosa, False si no se encuentra</returns>
         /// <exception cref="ArgumentNullException">Se lanza si el DTO del producto es nulo</exception>
-        Task<ProductReadDto?> UpdateProductAsync(int id, ProductUpdateDto product);
+        Task<bool> UpdateProductAsync(int id, ProductCreateDto product);
         
         /// <summary>
         /// Elimina un producto por su identificador único de forma asíncrona.
@@ -49,4 +49,3 @@ namespace MessageApi.Services
         Task<bool> DeleteProductAsync(int id);
     }
 }
-

@@ -76,10 +76,10 @@ namespace MessageApi.Services
         /// </summary>
         /// <param name="id">Identificador único de la persona a actualizar</param>
         /// <param name="person">DTO con los datos actualizados de la persona</param>
-        /// <returns>DTO con los datos actualizados de la persona o null si no se encuentra</returns>
+        /// <returns>True si la actualización fue exitosa, False si no se encuentra</returns>
         /// <exception cref="ArgumentNullException">Se lanza si el DTO de la persona es nulo</exception>
         /// <exception cref="ArgumentOutOfRangeException">Se lanza si el ID es menor o igual a cero</exception>
-        public async Task<PersonReadDto?> UpdatePersonAsync(int id, PersonUpdateDto person)
+        public async Task<bool> UpdatePersonAsync(int id, PersonCreateDto person)
         {
             if (person == null)
                 throw new ArgumentNullException(nameof(person));
@@ -87,17 +87,15 @@ namespace MessageApi.Services
             if (id <= 0)
                 throw new ArgumentOutOfRangeException(nameof(id), "El ID debe ser mayor que cero");
 
-            var entity = new Person
-            {
-                Id = id,
-                FirstName = person.FirstName ?? throw new ArgumentNullException(nameof(person.FirstName)),
-                LastName = person.LastName ?? throw new ArgumentNullException(nameof(person.LastName)),
-                Email = person.Email,
-                UpdatedAt = DateTime.UtcNow
-            };
+            var existingPerson = await _repository.GetPersonByIdAsync(id);
+            if (existingPerson == null)
+                return false;
 
-            var updated = await _repository.UpdatePersonAsync(entity);
-            return updated == null ? null : _mapper.Map<PersonReadDto>(updated);
+            _mapper.Map(person, existingPerson);
+            existingPerson.UpdatedAt = DateTime.UtcNow;
+
+            var updated = await _repository.UpdatePersonAsync(existingPerson);
+            return updated != null;
         }
 
         /// <summary>
@@ -155,4 +153,3 @@ namespace MessageApi.Services
         #endregion
     }
 }
-
